@@ -5,11 +5,11 @@ import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecord, Consum
 import org.apache.kafka.common.serialization.StringDeserializer
 
 import java.time.Duration
-import java.util.{Properties, UUID, Arrays}
+import java.util.{Arrays, Properties, UUID}
 
 object SimpleConsumer {
   val BootstrapServer = "35.239.241.212:9092,35.239.230.132:9092,34.69.66.216:9092"
-  val Topic: String = "change-me"
+  val Topic: String = "question-4"
 
   implicit val formats: DefaultFormats.type = DefaultFormats
 

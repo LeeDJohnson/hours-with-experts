@@ -1,6 +1,6 @@
 package com.github.farrellw.consumers
 
-import net.liftweb.json.{DefaultFormats, parse}
+import net.liftweb.json.{DefaultFormats, _}
 import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecord, ConsumerRecords, KafkaConsumer}
 import org.apache.kafka.common.serialization.StringDeserializer
 
@@ -9,10 +9,11 @@ import java.util
 import java.util.{Properties, UUID}
 
 object JSONConsumer {
-
   val BootstrapServer = "35.239.241.212:9092,35.239.230.132:9092,34.69.66.216:9092"
-  val Topic: String = "change-me"
+  val Topic: String = "question-5"
   implicit val formats: DefaultFormats.type = DefaultFormats
+
+  case class question5Data(name: String, phone: String, company: String, state: String, age: String, house: String)
 
   def main(args: Array[String]): Unit = {
     // Create the KafkaConsumer
@@ -30,6 +31,9 @@ object JSONConsumer {
       val records: ConsumerRecords[String, String] = consumer.poll(duration)
 
       records.forEach((record: ConsumerRecord[String, String]) => {
+        val json = parse(record.value())
+        val answer = json.extract[question5Data]
+        println(answer)
         /*
           // DEBUG Info
           println(s"Key: ${record.key}. Value: ${record.value}")
@@ -41,9 +45,6 @@ object JSONConsumer {
           2. Define a case class,  at the top of this file, that matches the message structure ( https://docs.scala-lang.org/tour/case-classes.html )
           3. Parse the JSON string into a scala case class ( https://alvinalexander.com/scala/simple-scala-lift-json-example-lift-framework/ )
          */
-
-        val message = record.value()
-        println(s"Message Received: $message")
       })
     }
   }
